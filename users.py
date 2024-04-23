@@ -8,14 +8,15 @@ app = FastAPI()
 # Entidad User, para evitar hacer a mano lo de abajo (@app.get("/usersjson"))
 
 class User(BaseModel):
+    id: int # para realizar el path
     name: str
     surname: str
     url: str
     age: int
 
-users_list = [User(name="Roman",surname="Danchuk",url="htpps://mouredev.com/python",age=33),
-            User(name="Lila",surname="Danchuk Cherdemian",url="htpps://mouredev.com/python",age=3),
-            User(name="Yasmin",surname="Cherdemian",url="htpps://mouredev.com/python",age=27)
+users_list = [User(id=1, name="Roman",surname="Danchuk",url="htpps://mouredev.com/python",age=33),
+            User(id=2, name="Lila",surname="Danchuk Cherdemian",url="htpps://mouredev.com/python",age=3),
+            User(id=3, name="Yasmin",surname="Cherdemian",url="htpps://mouredev.com/python",age=27)
             ]
 
 @app.get("/usersjson")
@@ -28,3 +29,8 @@ async def usersjson():
 @app.get("/users")
 async def users():
     return users_list
+
+@app.get("/user/{id}")
+async def user(id:int):
+    users = filter(lambda user: user.id == id, users_list)
+    return list(users)
