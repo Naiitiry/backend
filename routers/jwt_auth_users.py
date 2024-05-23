@@ -79,6 +79,6 @@ async def login(form:OAuth2PasswordRequestForm = Depends()):
 
                     }
 
-    return {"access_token":access_token,"token_type":"bearer"}
+    return {"access_token":jwt.encode(access_token,algorithm=ALGORITHM),"token_type":"bearer"}
 
-# minutos 5:19:00
+# minutos 5:19:00, continuar viendolo para aprender.
