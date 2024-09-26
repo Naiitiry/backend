@@ -27,5 +27,3 @@
 Personas-Desarrolladores del Proyecto
 </h2>
 En este momento soy el único desarrollador, les proporciono mi LinkedIn para que puedan ver mi perfil.<br>
-
-![Roman Danchuk](https://www.linkedin.com/in/roman-danchuk/)
