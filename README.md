@@ -5,6 +5,7 @@
 <p>Me propuse realizar 10 ejercicios, los cuales tendran gestión de usuarios, CRUD, validaciones, etc. para practicar eficientemente lo que propone cada framework.</p>
 
 <h3 align="center">Estado de proyectos:</h3>
+
 ![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
 
 ## Índice
