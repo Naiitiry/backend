@@ -26,6 +26,33 @@ class Usuario:
         return check_password_hash(self.contraseña_hash,contraseña_hash)
 
     @staticmethod
+    def get_by_email(email):
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * FROM usuarios WHERE email = %s",(email,)
+        )
+        row = cursor.fetchone()
+        cursor.close()
+        if row:
+            return Usuario(
+                id_user=row[0],
+                nombre=row[1],
+                apellido=row[2],
+                edad=row[3],
+                email=row[4],
+                telefono=row[5],
+                usuario=row[6],
+                contraseña_hash=row[7],
+                fecha_nacimiento=row[8],
+                domicilio=row[9],
+                usuario_role=row[10],
+                status=row[11],
+            )
+        return None
+
+
+    @staticmethod
     def __get_users_by_query(query):
         db = get_db()
         cursor = db.cursor()
@@ -56,15 +83,13 @@ class Usuario:
     @staticmethod
     def get_by_id(id_user):
         db = get_db()
-        cursor = db.cursor
-        cursor.execute(
-            "SELECT * FROM usuarios WHERE id=%s",(id_user,)
-        )
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM usuarios WHERE id=%s",(id_user,))
         row = cursor.fetchone()
         cursor.close()
-
+        db.close()
         if row:
-            return Usuario(
+            usuario = Usuario(
                 id_user=row[0],
                 nombre=row[1],
                 apellido=row[2],
@@ -78,8 +103,14 @@ class Usuario:
                 usuario_role=row[10],
                 status=row[11],
             )
+            cursor.close()
+            db.close()
+            return usuario
+        cursor.close()
+        db.close()
         return None
     
+    # Actualizar o crear usuario, según si se encuentra su ID
     def save(self):
         db = get_db()
         cursor = db.cursor()
@@ -108,7 +139,8 @@ class Usuario:
         db.commit()
         cursor.close()
 
-    def delete(self):
+    # En vez de eliminarlo, lo pasa a "inactivo"
+    def delete(self): 
         db = get_db()
         cursor = db.cursor()
         cursor.execute(
@@ -129,7 +161,7 @@ class Usuario:
             'edad': self.edad,
             'email': self.email,
             'telefono': self.telefono,
-            'fecha_nacimiento': self.fecha_nacimiento,
+            'fecha_nacimiento': self.fecha_nacimiento.strftime('%Y-%m-%d'),
             'domicilio': self.domicilio,
             'usuario_role': self.usuario_role,
             'status': self.status

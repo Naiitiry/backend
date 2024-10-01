@@ -12,7 +12,7 @@ DATABASE_CONFIG = {
     'password': os.getenv('DB_PASSWORD'),     
     'host': os.getenv('DB_HOST'),            
     'database': os.getenv('DB_NAME'),        
-    'port': os.getenv('DB_PORT', 5432)   
+    'port': os.getenv('DB_PORT', 5432)
 }
 
 # Test de la BBDD
@@ -40,14 +40,14 @@ def init_app(app):
 # Creación de BBDD
 """
 Ya que Postgresql no posee ENUM, se genera con TYPE
-los 3 STATUS y los 3 ROLES de un usuario.
+los 3 STATUS y los 2 ROLES de un usuario.
 """
 def create_table_usuarios():
     conn = psycopg2.connect(**DATABASE_CONFIG)
     cur = conn.cursor()
     cur.execute(
         """
-        CREATE TYPE usuario_role AS ENUM('admin','usuario','anonimo');
+        CREATE TYPE usuario_role AS ENUM('admin','usuario');
         CREATE TYPE status AS ENUM('activo','inactivo','bloqueado');
 
         CREATE TABLE IF NOT EXISTS Usuarios(
