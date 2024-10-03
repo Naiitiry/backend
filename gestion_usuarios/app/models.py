@@ -111,33 +111,40 @@ class Usuario:
         return None
     
     # Actualizar o crear usuario, según si se encuentra su ID
+
     def save(self):
         db = get_db()
         cursor = db.cursor()
-        if self.id_user: #actualizar usuario
-            cursor.execute(
-                """
-                UPDATE usuarios
-                SET nombre = %s, apellido = %s, edad = %s, 
-                email = %s, telefono = %s, fecha_nacimiento = %s,
-                domicilio = %s, usuario_role = %s, status = %s
-                WHERE id = %s
-                """,
-                (self.nombre, self.apellido, self.edad, self.email, self.telefono,
-                self.fecha_nacimiento, self.domicilio, self.usuario_role, self.status)
-            )
-        else: # En caso de que no exista el usuario id (id_user) crea uno nuevo
-            cursor.execute(
-                """
-                INSERT INTO usuarios
-                (nombre, apellido, edad, email, telefono, usuario, contraseña_hash, fecha_nacimiento, domicilio, usuario_role, status)
-                VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (self.nombre, self.apellido, self.edad, self.email, self.telefono, self.usuario, self.contraseña_hash, self.fecha_nacimiento, self.domicilio, self.usuario_role, self.status)
-            )
-            self.id_user = cursor.lastrowid
-        db.commit()
-        cursor.close()
+        try:
+            if self.id_user:  # Actualizar usuario
+                cursor.execute(
+                    """
+                    UPDATE usuarios
+                    SET nombre = %s, apellido = %s, edad = %s, 
+                    email = %s, telefono = %s, fecha_nacimiento = %s,
+                    domicilio = %s, usuario_role = %s, status = %s
+                    WHERE id = %s
+                    """,
+                    (self.nombre, self.apellido, self.edad, self.email, self.telefono,
+                    self.fecha_nacimiento, self.domicilio, self.usuario_role, self.status, self.id_user)
+                )
+            else:  # Crear uno nuevo
+                cursor.execute(
+                    """
+                    INSERT INTO usuarios
+                    (nombre, apellido, edad, email, telefono, usuario, contraseña_hash, fecha_nacimiento, domicilio, usuario_role, status)
+                    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id
+                    """,
+                    (self.nombre, self.apellido, self.edad, self.email, self.telefono, self.usuario, self.contraseña_hash, self.fecha_nacimiento, self.domicilio, self.usuario_role, self.status)
+                )
+                self.id_user = cursor.fetchone()[0]  # Obtener el ID del nuevo usuario
+            db.commit()  # Guarda los cambios
+        except Exception as e:
+            db.rollback()  # Revierte cambios en caso de error
+            print(f"Error al guardar el usuario: {e}")  # O loguea el error de alguna forma
+        finally:
+            cursor.close()  # Asegúrate de cerrar el cursor
 
     # En vez de eliminarlo, lo pasa a "inactivo"
     def delete(self): 

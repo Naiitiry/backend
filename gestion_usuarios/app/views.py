@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, request
+from flask import jsonify, request
 #from werkzeug.security import check_password_hash, generate_password_hash
 from app.models import Usuario
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -35,36 +35,39 @@ def login():
     data = request.get_json()
     usuario = Usuario.get_by_email(data['email'])
     if usuario and usuario.check_password(data['contraseña']):
-        access_token = create_access_token(identity={'username':usuario.usuario,'role':usuario.usuario_role})
+        access_token = create_access_token(identity={'username':usuario.usuario,'role':usuario.usuario_role,'id':usuario.id_user})
         return jsonify(access_token=access_token), 200
     return jsonify({'error':'Inicio de sesión inválido'}), 401
 
-
 @jwt_required()
 def profile(id_user):
-    current_user_id = get_jwt_identity()
+    current_user= get_jwt_identity()
+    current_user_id = current_user['id']
     usuario = Usuario.get_by_id(id_user)
-    if request.method == 'GET':
-        return jsonify(usuario.serialize())
-    elif request.method == 'PUT':
-        if usuario.usuario_role == 'admin' or current_user_id == usuario.id_user:
-            data = request.get_json()
-            usuario.nombre = data.get('nombre',usuario.nombre)
-            usuario.apellido = data.get('apellido',usuario.apellido)
-            usuario.edad = data.get('edad',usuario.edad)
-            usuario.email = data.get('email',usuario.email)
-            usuario.telefono = data.get('telefono',usuario.telefono)
-            usuario.fecha_nacimiento = data.get('fecha_nacimiento',usuario.fecha_nacimiento)
-            usuario.domicilio = data.get('domicilio',usuario.domicilio)
-            usuario.usuario_role = data.get('usuario_role',usuario.usuario_role)
-            usuario.status = data.get('status',usuario.status)
-            usuario.save()
-            return jsonify({'message':'Usuario actualizado!.'}), 200
-        else:
-            return jsonify({'error':'No autorizado'}),403
-    elif request.method == 'DELETE':
-        if usuario.usuario_role == 'admin':
-            usuario.delete()
-            return jsonify({'message':'El usuario ha sido inhabilitado.'}), 200
-        else:
-            return jsonify({'error':'No autorizado'}),403
+    if not usuario:
+        return jsonify({'message':'Usuario no encontrado'})
+    return jsonify(usuario.serialize()), 200
+
+def ayuda():
+    if request.method == 'PUT':
+        pass
+        # if current_user_id == usuario.id_user:
+        #     data = request.get_json()
+        #     usuario.nombre = data.get('nombre',usuario.nombre)
+        #     usuario.apellido = data.get('apellido',usuario.apellido)
+        #     usuario.edad = data.get('edad',usuario.edad)
+        #     usuario.email = data.get('email',usuario.email)
+        #     usuario.telefono = data.get('telefono',usuario.telefono)
+        #     usuario.fecha_nacimiento = data.get('fecha_nacimiento',usuario.fecha_nacimiento)
+        #     usuario.domicilio = data.get('domicilio',usuario.domicilio)
+        #     usuario.usuario_role = data.get('usuario_role',usuario.usuario_role)
+        #     usuario.status = data.get('status',usuario.status)
+        #     usuario.save()
+        #     return jsonify({'message':'Usuario actualizado!.'}), 200
+        # return jsonify({'error':'No autorizado'}),403
+    
+    # elif request.method == 'DELETE':
+    #     if current_user['usuario_role'] == 'admin':
+    #         usuario.delete()
+    #         return jsonify({'message':'El usuario ha sido inhabilitado.'}), 200
+    #     return jsonify({'error':'No autorizado'}),403
