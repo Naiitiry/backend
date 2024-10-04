@@ -18,6 +18,7 @@ def create_app():
     jwt.init_app(app)
     from app.models import Usuario
     from app.views import register,login,logout,index,profile,edit_profile
+    
     # Rutas de login, register y profile
     app.route('/', methods=['GET'])(index)
 

@@ -27,9 +27,7 @@ def register():
     db.session.commit()
     return jsonify({'message': f'Usuario {data['usuario']}, creado correctamente.'}), 200
 
-# Logear a traves del Email,
-# Tambien, en un futuro, modificar para que el username
-# sea otra alternativa
+# Logear a traves del nombre de usuario
 def login():
     data = request.get_json()
     usuario_login = Usuario.query.filter_by(usuario=data['usuario']).first()
@@ -53,10 +51,11 @@ def profile(id_user):
 
 @jwt_required()
 def edit_profile(id_user):
-    id_user = get_jwt_identity()['id']
-    usuario = Usuario.query.filter_by(uid=id_user['id']).first()
+    id_user = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(uid=id_user).first()
+    usuario = Usuario.query.filter_by(uid=id_user).first()
     if usuario:
-        if usuario.usuario_rol == 'admin' or usuario.uid == id_user['id']:
+        if usuario.uid != usuario_logueado.uid and usuario_logueado.usuario_rol != 'admin':
             data = request.get_json()
             usuario.nombre = data.get('nombre',usuario.nombre)
             usuario.apellido = data.get('apellido',usuario.apellido)
@@ -68,8 +67,20 @@ def edit_profile(id_user):
             usuario.status = data.get('status',usuario.status)
             db.session.commit()
             return jsonify({'message':'Usuario actualizado!.'}), 200
-    return jsonify({'error':'No autorizado'}),403
-    
+        return jsonify({'error':'No autorizado'}),403
+    return jsonify({'error':'Usuario inexistente'}), 404
+
+@jwt_required()
+def archive_profile(id_user):
+    id_user = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(uid=id_user).first()
+    usuario = Usuario.query.filter_by(uid=id_user).first()
+    if usuario:
+        if usuario.uid != usuario_logueado.uid and usuario_logueado.usuario_rol != 'admin':
+            usuario.delete()
+            return jsonify({'message':'Usuario deshabilitado.'}), 200
+        return jsonify({'error':'No autorizado'}),403
+    return jsonify({'error':'Usuario inexistente'}), 404
     # elif request.method == 'DELETE':
     #     if current_user['usuario_role'] == 'admin':
     #         usuario.delete()
