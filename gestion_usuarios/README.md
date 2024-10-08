@@ -7,10 +7,7 @@
 
 ## Test
 
-<p>
-  > Aclaración: las pruebas serán hechas en ThunderClient, desde VSCode, también lo hice con Postman pero por comodidad continuaré con el primero
-  y la ejecución de la API lo realizo en el CMD de Windows directamente en vez de la consola del IDE.
-</p>
+> Aclaración: las pruebas serán hechas en ThunderClient, desde VSCode, también lo hice con Postman pero por comodidad continuaré con el primero y la ejecución de la API lo realizo en el CMD de Windows directamente en vez de la consola del IDE.
 <ol>
   <li>Ejecución del servicio.</li>
   <li>Primer GET para saber si conecta correctamente a la API.</li>
