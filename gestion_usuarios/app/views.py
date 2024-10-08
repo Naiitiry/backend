@@ -27,7 +27,7 @@ def register():
     db.session.commit()
     return jsonify({'message': f'Usuario {data['usuario']}, creado correctamente.'}), 200
 
-# Logear a traves del nombre de usuario
+# Logear a traves de usuario y contraseña
 def login():
     data = request.get_json()
     usuario_login = Usuario.query.filter_by(usuario=data['usuario']).first()
