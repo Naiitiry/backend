@@ -17,7 +17,9 @@
   <li>Unicamente podemos modificar nuestros datos y en caso de que seamos "admin" podemos modificar otros usuarios con el método PUT.</li>
   <li>Luego utilizamos otro GET para ver si efectivamente se realizó la actualización.</li>
 </ol>
+
 ## Glosario
+
 <table>
   <thead>
     <th>Endpoint</th>
@@ -25,8 +27,20 @@
   </thead>
   <tbody>
     <tr>
-      <td>127.0.0.1:5000/</td>
-      <td>Muetra un texto simple para saber que se conecta correctamente con un GET</td>
+      <td>```127.0.0.1:5000/```</td>
+      <td>Muetra un texto simple para saber que se conecta correctamente con un GET.</td>
+    </tr>
+    <tr>
+      <td>```/session/register```</td>
+      <td>Permite registrar a un usuario nuevo a través del método POST.</td>
+    </tr>
+        <tr>
+      <td>un endpoint</td>
+      <td>que es lo que hace</td>
+    </tr>
+        <tr>
+      <td>un endpoint</td>
+      <td>que es lo que hace</td>
     </tr>
   </tbody>
 </table>
