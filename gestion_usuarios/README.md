@@ -18,3 +18,15 @@
   <li>Luego utilizamos otro GET para ver si efectivamente se realizó la actualización.</li>
 </ol>
 ## Glosario
+<table>
+  <thead>
+    <th>Endpoint</th>
+    <th>¿Qué hace?</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>127.0.0.1:5000/</td>
+      <td>Muetra un texto simple para saber que se conecta correctamente con un GET</td>
+    </tr>
+  </tbody>
+</table>
