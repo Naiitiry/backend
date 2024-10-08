@@ -17,7 +17,7 @@ def create_app():
     migrate.init_app(app,db)
     jwt.init_app(app)
     from app.models import Usuario
-    from app.views import register,login,logout,index,profile,edit_profile
+    from app.views import register,login,index,profile,edit_profile,archive_profile
     
     # Rutas de login, register y profile
     app.route('/', methods=['GET'])(index)
@@ -26,6 +26,7 @@ def create_app():
     app.route('/session/login', methods=['POST']) (login)
     app.route('/session/profile/<int:id_user>', methods=['GET']) (profile)
     app.route('/session/profile/edit/<int:id_user>', methods=['PUT']) (edit_profile)
+    app.route('/session/profile/status/<int:id_user>', methods=['PUT']) (archive_profile)
     
 
     return app

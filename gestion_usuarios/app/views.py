@@ -36,14 +36,10 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify({'error':'Inicio de sesión inválido'}), 401
 
-@jwt_required()
-def logout():
-    db.session.close()
-    return jsonify({'message':'Cierre de sesión exitoso.'})
 
 @jwt_required()
 def profile(id_user):
-    id_user = get_jwt_identity()
+    #id_user_jwt = get_jwt_identity()
     usuario = Usuario.query.filter_by(uid=id_user).first()
     if not usuario:
         return jsonify({'message':'Usuario no encontrado'})
@@ -51,11 +47,11 @@ def profile(id_user):
 
 @jwt_required()
 def edit_profile(id_user):
-    id_user = get_jwt_identity()
-    usuario_logueado = Usuario.query.filter_by(uid=id_user).first()
+    id_user_jwt = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(uid=id_user_jwt).first()
     usuario = Usuario.query.filter_by(uid=id_user).first()
     if usuario:
-        if usuario.uid != usuario_logueado.uid and usuario_logueado.usuario_rol != 'admin':
+        if usuario.uid == usuario_logueado.uid or usuario_logueado.usuario_rol == 'admin':
             data = request.get_json()
             usuario.nombre = data.get('nombre',usuario.nombre)
             usuario.apellido = data.get('apellido',usuario.apellido)
@@ -72,8 +68,8 @@ def edit_profile(id_user):
 
 @jwt_required()
 def archive_profile(id_user):
-    id_user = get_jwt_identity()
-    usuario_logueado = Usuario.query.filter_by(uid=id_user).first()
+    id_user_jwt = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(uid=id_user_jwt).first()
     usuario = Usuario.query.filter_by(uid=id_user).first()
     if usuario:
         if usuario.uid != usuario_logueado.uid and usuario_logueado.usuario_rol != 'admin':
@@ -81,8 +77,3 @@ def archive_profile(id_user):
             return jsonify({'message':'Usuario deshabilitado.'}), 200
         return jsonify({'error':'No autorizado'}),403
     return jsonify({'error':'Usuario inexistente'}), 404
-    # elif request.method == 'DELETE':
-    #     if current_user['usuario_role'] == 'admin':
-    #         usuario.delete()
-    #         return jsonify({'message':'El usuario ha sido inhabilitado.'}), 200
-    #     return jsonify({'error':'No autorizado'}),403
