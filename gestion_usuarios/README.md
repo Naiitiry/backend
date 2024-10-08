@@ -40,18 +40,20 @@
       <td>que es lo que hace</td>
     </tr>
     <tr>
-      <td>`/session/profile/<int:id_user>`</td>
-      <td>que es lo que hace</td>
+      <td>
+        /session/profile/&lt;int:id_user&gt
+      </td>
+      <td>Una vez logeado permite ver a cualquier usuario indicando el número de ID</td>
     </tr>
         </tr>
         <tr>
-      <td>/session/profile/<int:id_user></td>
-      <td>que es lo que hace</td>
+      <td>/session/profile/edit/&lt;int:id_user&gt;</td>
+      <td>Permite editar al usuarios, siempre y cuando quien edite sea el propio usuario o tenga el rol de "admin"</td>
     </tr>
         </tr>
     <tr>
-      <td>/session/profile/<int:id_user></td>
-      <td>que es lo que hace</td>
+      <td>/session/profile/status/&lt;int:id_user&gt;</td>
+      <td>Permite cambiar el status al usuario seleccionado, hay 3 opciones, "activo", "inactivo" y "bloqueado".</td>
     </tr>
   </tbody>
 </table>
