@@ -10,14 +10,18 @@
 
 ## Índice
 
-[Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
+[Aplicaciones](#Aplicaciones)
 
 [Tecnologías utilizadas](#tecnologías-utilizadas)
 
 [Personas-Desarrolladores del Proyecto](#personas-desarrolladores)
 
 <h2 align="center" id="Características-de-la-aplicación-y-demostración">:hammer: Características de la aplicación y demostración</h2>
-<b>PENDIENTE</b>
+<ul>
+ <li>To-Do list</li>
+ <li>Login de usuarios</li>
+</ul>
+<span>En cada una de las apps/API's pondré capturas de su funcionamiento, en primer instancia, localmente y luego ver donde subirlas para mostrar como funciona subidas a producción.</span>
  
 <h2 align="center" id="personas-desarrolladores">:white_check_mark:Tecnologías utilizadas</h2>
 🟢 Python <br>
