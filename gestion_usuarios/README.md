@@ -6,7 +6,7 @@
 </p>
 <h2>Test</h2>
 <p>
-  ><b>Aclaración</b>: las pruebas serán hechas en ThunderClient, desde VSCode, también lo hice con Postman pero por comodidad continuaré con el primero
+  >Aclaración: las pruebas serán hechas en ThunderClient, desde VSCode, también lo hice con Postman pero por comodidad continuaré con el primero
   y la ejecución de la API lo realizo en el CMD de Windows directamente en vez de la consola del IDE.
 </p>
 <ol>
