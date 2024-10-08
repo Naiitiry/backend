@@ -21,7 +21,7 @@
  <li>To-Do list</li>
  <li>Login de usuarios</li>
 </ul>
-<span>En cada una de las apps/API's pondré capturas de su funcionamiento, en primer instancia, localmente y luego ver donde subirlas para mostrar como funciona subidas a producción.</span>
+<span>En cada una de las apps/API's pondré capturas de su funcionamiento, en primer instancia, localmente y luego ver que servicio de Hosting es mas ventajoso para mostrar como funciona subidas a producción.</span>
  
 <h2 align="center" id="personas-desarrolladores">:white_check_mark:Tecnologías utilizadas</h2>
 🟢 Python <br>
