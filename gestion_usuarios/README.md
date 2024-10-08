@@ -27,19 +27,30 @@
   </thead>
   <tbody>
     <tr>
-      <td>```127.0.0.1:5000/```</td>
-      <td>Muetra un texto simple para saber que se conecta correctamente con un GET.</td>
+      <td>127.0.0.1:5000/</td>
+      <td>Muetra un texto simple para saber que se conecta correctamente con un GET.
+      </td>
     </tr>
     <tr>
-      <td>```/session/register```</td>
+      <td>/session/register</td>
       <td>Permite registrar a un usuario nuevo a través del método POST.</td>
     </tr>
-        <tr>
-      <td>un endpoint</td>
+    <tr>
+      <td>/session/login</td>
       <td>que es lo que hace</td>
     </tr>
+    <tr>
+      <td>`/session/profile/<int:id_user>`</td>
+      <td>que es lo que hace</td>
+    </tr>
+        </tr>
         <tr>
-      <td>un endpoint</td>
+      <td>/session/profile/<int:id_user></td>
+      <td>que es lo que hace</td>
+    </tr>
+        </tr>
+    <tr>
+      <td>/session/profile/<int:id_user></td>
       <td>que es lo que hace</td>
     </tr>
   </tbody>
