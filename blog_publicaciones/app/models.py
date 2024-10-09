@@ -1,5 +1,5 @@
 from sqlalchemy import Enum, func
-from run import db
+from . import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class Usuario(db.Model):
@@ -52,6 +52,15 @@ class Post(db.Model):
     categoria_id = db.Column(db.Integer,db.ForeignKey('categoria.id'),nullable=False)
     status_post = db.Column(Enum('borrador','publicado',name='status_post'),default='borrador',nullable=True)
 
+    def serialize_post(self):
+        return{
+            'id':self.id, 'titulo':self.titulo, 'contenido':self.contenido,
+            'fecha de creacion':self.fecha_creacion.strftime('%d/%m/%Y') if self.fecha_registro else None,
+            'Ultima actualización':self.fecha_actualizacion.strftime('%d/%m/%Y') if self.fecha_registro else None,
+            'id del creador':self.autor_id,'id de categoría':self.categoria_id,
+            'Estado post':self.status_post
+        }
+
 class Comentario(db.Model):
     __tablename__ = 'comentario'
     id = db.Column(db.Integer,primary_key=True)
@@ -72,5 +81,5 @@ class Tag(db.Model):
 
 class Posts_Tags(db.Model):
     __tablename__ = 'posts_tags'
-    post_id = db.Column(db.Integer,db.ForeignKey('post.id', ondelete='CASCADE'),nullable=False)
-    tag_id = db.Column(db.Integer,db.ForeignKey('tag.id', ondelete='CASCADE'),nullable=False)
+    post_id = db.Column(db.Integer,db.ForeignKey('post.id', ondelete='CASCADE'),primary_key=True,nullable=False)
+    tag_id = db.Column(db.Integer,db.ForeignKey('tag.id', ondelete='CASCADE'),primary_key=True,nullable=False)
