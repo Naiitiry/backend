@@ -17,10 +17,12 @@ def create_app():
     jwt.init_app(app)
 
     from app.models import Usuario, Tag, Post, Posts_Tags, Comentario, Categoria
-    from app.views import index
+    from app.views import index, register, login, profile, get_all_post
 
 
     app.route('/',methods=['GET'])(index)
+    app.route('/session/register',methods=['POST'])(register)
+    app.route('/session/login',methods=['POST'])(login)
 
     return app
 
