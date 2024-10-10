@@ -20,9 +20,9 @@ def register():
         email = data['email'],
         usuario = data['usuario'],
         password_hash = data['contraseña'],
-        rol = data['rol'],
+        rol = 'usuario',
         status = 'activo',
-        fecha_registro = ['fecha de registro']
+        fecha_registro = data.get('fecha_registro')
     )
     usuario.set_password_hash(data['contraseña'])
     db.session.add(usuario)
@@ -39,12 +39,29 @@ def login():
 
 @jwt_required()
 def profile(user_id):
-    usuario = Usuario.query.filter_by(id=user_id)
+    usuario = Usuario.query.filter_by(id=user_id).first()
     if not usuario:
-        return jsonify({'message':'El usuario no encontrado'}), 404
+        return jsonify({'message':'Usuario no encontrado'}), 404
     return jsonify(usuario.serialize()), 200
 
 #*******************Editar usuario PENDIENTE*******************
+@jwt_required()
+def edit_profile(user_id):
+    user_id_jwt = get_jwt_identity()
+    usuario = Usuario.query.filter_by(id=user_id).first()
+    usuario_logueado = Usuario.query.filter_by(id=user_id_jwt).first()
+    if usuario:
+        if usuario.id == usuario_logueado.id or usuario_logueado.rol == 'admin':
+            data = request.get_json()
+            usuario.nombre = data.get('nombre',usuario.nombre)
+            usuario.apellido = data.get('apellido',usuario.apellido)
+            usuario.usuario = data.get('usuario',usuario.usuario)
+            usuario.email = data.get('email',usuario.email)
+            db.session.commit()
+            return jsonify({'message':f'Usuario {data['usuario']}, actualizaco con éxito'}), 200
+        return jsonify({'error':'No autorizado'}), 403
+    return jsonify({'error':'Usuario inexistente'}), 404
+
 
 
 '''
@@ -54,15 +71,9 @@ CRUD DE POSTEOS
 # Buscar todos los posts
 @jwt_required()
 def get_all_post():
-    autor_ident = get_jwt_identity()
-    posts = Post.query.filter_by(autor_id=autor_ident).all()
-    posts_json  = [{
-        'id':post.id,'titulo':post.titulo,'contendio':post.contenido,
-        'fecha de creacion':post.fecha_creacion,'categoria':post.categoria,
-        'status':post.status_post,'autor':post.autor_id,'Ultima actualizacion':post.fecha_actualizacion
-    } for post in posts]
-
-    return jsonify(posts_json), 200
+    posts = Post.query.all()
+    posts_listados = [post.serialize() for post in posts]
+    return jsonify({'Todos los posts':posts_listados}), 200
 
 # Buscar un post
 @jwt_required()
@@ -82,7 +93,7 @@ def create_post():
     post = Post(
         titulo = data['titulo'],
         contenido = data.get('contenido'),
-        autor_ident = autor_id,
+
         categoria_id = data['categoria'],
         status_post = data.get('status'),
         )
@@ -111,3 +122,14 @@ def edit_post(post_id):
         db.session.commit()
         return jsonify({'message':'Usuario editado correctamente.'}), 200
     return jsonify({'error':'No autorizado.'}), 403
+
+
+'''
+CRUD DE CATEGORIAS
+'''
+
+@jwt_required()
+def get_all_categories():
+    categorias = Categoria.query.all()
+    categorias_listada = [categoria.serialize() for categoria in categorias]
+    return jsonify({'categorias':categorias_listada}), 200

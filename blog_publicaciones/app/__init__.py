@@ -17,13 +17,22 @@ def create_app():
     jwt.init_app(app)
 
     from app.models import Usuario, Tag, Post, Posts_Tags, Comentario, Categoria
-    from app.views import index, register, login, profile, get_all_post
+    from app.views import index, register, login, profile, get_all_post, get_post, create_post, edit_post
 
-
+    # Gestión de usuario
     app.route('/',methods=['GET'])(index)
-    app.route('/session/register',methods=['POST'])(register)
-    app.route('/session/login',methods=['POST'])(login)
+    app.route('/api/register',methods=['POST'])(register)
+    app.route('/api/login',methods=['POST'])(login)
+    app.route('/api/fetch/<int:user_id>',methods=['GET'])(profile)
 
+    # Gestión de publicaciones
+    app.route('/api/publicaciones',methods=['GET'])(get_all_post)
+    app.route('/api/publicacion/<int:post_id>',methods=['GET'])(get_post)
+    app.route('/api/crear_publicacion',methods=['POST'])(create_post)
+    app.route('/api/editar_publicacion/<int:post_id>',methods=['PUT'])(edit_post)
+
+    # Creación de categorías, unicamente ADMINS
+    
     return app
 
 # para correr correctamente la migración de SQLAlchemy

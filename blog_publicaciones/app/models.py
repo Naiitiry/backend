@@ -14,6 +14,9 @@ class Usuario(db.Model):
     status = db.Column(Enum('activo','inactivo','bloqueado',name='status'),default='activo',nullable=True)
     fecha_registro = db.Column(db.DateTime,default=func.now(),nullable=True)
 
+    # Relación usuario - posts
+    posts = db.relationship('Post',backref='autor',lazy=True)
+
     def set_password_hash(self,password):
         self.password_hash=generate_password_hash(password)
 
@@ -30,6 +33,7 @@ class Usuario(db.Model):
         self.status = 'bloqueado'
 
     def serialize(self):
+        post_totales = Post.query.filter_by(autor_id=self.id).count()
         return{
             'id':self.id,
             'nombre': self.nombre,
@@ -38,7 +42,8 @@ class Usuario(db.Model):
             'email': self.email,
             'rol': self.rol,
             'status': self.status,
-            'fecha_registro':self.fecha_registro.strftime('%d/%m/%Y') if self.fecha_registro else None
+            'fecha_registro':self.fecha_registro.strftime('%d/%m/%Y') if self.fecha_registro else None,
+            'post_totales': post_totales
         }
 
 class Post(db.Model):
@@ -73,6 +78,12 @@ class Categoria(db.Model):
     __tablename__ = 'categoria'
     id = db.Column(db.Integer,primary_key=True)
     nombre = db.Column(db.String(150),unique=True,nullable=False)
+
+    def serialize_categorias(self):
+        return{
+            'id':self.id,
+            'nombre':self.nombre
+        }
 
 class Tag(db.Model):
     __tablename__ = 'tag'
