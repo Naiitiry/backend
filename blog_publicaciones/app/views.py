@@ -133,3 +133,22 @@ def get_all_categories():
     categorias = Categoria.query.all()
     categorias_listada = [categoria.serialize() for categoria in categorias]
     return jsonify({'categorias':categorias_listada}), 200
+
+@jwt_required()
+def crear_categorias():
+    user_ident = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    
+    if usuario_logueado.rol != 'admin':
+        return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
+    data = request.get_json()
+    nombre_categoria = data.get('nombre')
+    categoria_existente = Categoria.query.filter_by(nombre=nombre_categoria).first()
+    if categoria_existente:
+        return jsonify({'error','Categoría ya existente.'}), 400
+    
+    nueva_categoria = Categoria(nombre_categoria)
+    db.session.add(nueva_categoria)
+    db.session.commit()
+
+    return jsonify({'message':'Categoría creada exitosamente.','categoria':nueva_categoria.serialize_categorias()})
