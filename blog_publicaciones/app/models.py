@@ -81,7 +81,6 @@ class Categoria(db.Model):
 
     def serialize_categorias(self):
         return{
-            'id':self.id,
             'nombre':self.nombre
         }
 
