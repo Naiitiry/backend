@@ -60,8 +60,8 @@ class Post(db.Model):
     def serialize_post(self):
         return{
             'id':self.id, 'titulo':self.titulo, 'contenido':self.contenido,
-            'fecha de creacion':self.fecha_creacion.strftime('%d/%m/%Y') if self.fecha_registro else None,
-            'Ultima actualización':self.fecha_actualizacion.strftime('%d/%m/%Y') if self.fecha_registro else None,
+            'fecha de creacion':self.fecha_creacion.strftime('%d/%m/%Y'),
+            'Ultima actualización':self.fecha_actualizacion.strftime('%d/%m/%Y'),
             'id del creador':self.autor_id,'id de categoría':self.categoria_id,
             'Estado post':self.status_post
         }
@@ -74,10 +74,20 @@ class Comentario(db.Model):
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'),nullable=False)
     autor_id = db.Column(db.Integer,db.ForeignKey('usuario.id'),nullable=False)
 
+    def serialize(self):
+        return{
+            'contenido':self.contenido,
+            'fecha de creación':self.fecha_creacion,
+            
+        }
+
 class Categoria(db.Model):
     __tablename__ = 'categoria'
     id = db.Column(db.Integer,primary_key=True)
     nombre = db.Column(db.String(150),unique=True,nullable=False)
+
+    def __init__(self,nombre):
+        self.nombre = nombre
 
     def serialize_categorias(self):
         return{
@@ -88,6 +98,9 @@ class Tag(db.Model):
     __tablename__ = 'tag'
     id = db.Column(db.Integer,primary_key=True)
     nombre = db.Column(db.String(150),unique=True,nullable=False)
+
+    def __init__(self, nombre):
+        self.nombre = nombre
 
 class Posts_Tags(db.Model):
     __tablename__ = 'posts_tags'

@@ -72,7 +72,7 @@ CRUD DE POSTEOS
 @jwt_required()
 def get_all_post():
     posts = Post.query.all()
-    posts_listados = [post.serialize() for post in posts]
+    posts_listados = [post.serialize_post() for post in posts]
     return jsonify({'Todos los posts':posts_listados}), 200
 
 # Buscar un post
@@ -93,7 +93,9 @@ def create_post():
     post = Post(
         titulo = data['titulo'],
         contenido = data.get('contenido'),
-
+        autor_id = autor_id,
+        # La categoria_id va con el ID, si ponemos con 
+        # nombre arroja el error.
         categoria_id = data['categoria'],
         status_post = data.get('status'),
         )
@@ -132,7 +134,7 @@ CRUD DE CATEGORIAS
 def get_all_categories():
     categorias = Categoria.query.all()
     categorias_listada = [categoria.serialize_categorias() for categoria in categorias]
-    return jsonify({'categorias':categorias_listada}), 200
+    return jsonify({categorias_listada}), 200
 
 @jwt_required()
 def crear_categorias():
@@ -142,7 +144,8 @@ def crear_categorias():
     if usuario_logueado.rol != 'admin':
         return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
     data = request.get_json()
-    nombre_categoria = data.get('nombre')
+    nombre_categoria = nombre = data.get('nombre')
+
     categoria_existente = Categoria.query.filter_by(nombre=nombre_categoria).first()
     if categoria_existente:
         return jsonify({'error','Categoría ya existente.'}), 400
@@ -150,8 +153,7 @@ def crear_categorias():
     nueva_categoria = Categoria(nombre_categoria)
     db.session.add(nueva_categoria)
     db.session.commit()
-
-    return jsonify({'message':'Categoría creada exitosamente.','categoria':nueva_categoria.serialize_categorias()})
+    return jsonify({'message':f'Categoría {nombre_categoria} creada exitosamente.'}), 201
 
 @jwt_required()
 def editar_categoria(cate_id):
