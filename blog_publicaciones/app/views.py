@@ -134,7 +134,7 @@ CRUD DE CATEGORIAS
 def get_all_categories():
     categorias = Categoria.query.all()
     categorias_listada = [categoria.serialize_categorias() for categoria in categorias]
-    return jsonify({categorias_listada}), 200
+    return jsonify({'categorias':categorias_listada}), 200
 
 @jwt_required()
 def crear_categorias():
