@@ -39,7 +39,7 @@ def login():
 
 @jwt_required()
 def profile(user_id):
-    usuario = Usuario.query.filter_by(id=user_id).first()
+    usuario = Usuario.query.get_or_404(user_id)
     if not usuario:
         return jsonify({'message':'Usuario no encontrado'}), 404
     return jsonify(usuario.serialize()), 200
@@ -48,7 +48,7 @@ def profile(user_id):
 @jwt_required()
 def edit_profile(user_id):
     user_id_jwt = get_jwt_identity()
-    usuario = Usuario.query.filter_by(id=user_id).first()
+    usuario = Usuario.query.get_or_404(user_id)
     usuario_logueado = Usuario.query.filter_by(id=user_id_jwt).first()
     if usuario:
         if usuario.id == usuario_logueado.id or usuario_logueado.rol == 'admin':
@@ -58,11 +58,9 @@ def edit_profile(user_id):
             usuario.usuario = data.get('usuario',usuario.usuario)
             usuario.email = data.get('email',usuario.email)
             db.session.commit()
-            return jsonify({'message':f'Usuario {data['usuario']}, actualizaco con éxito'}), 200
+            return jsonify({'message':f"Usuario {data['usuario']}, actualizaco con éxito"}), 200
         return jsonify({'error':'No autorizado'}), 403
     return jsonify({'error':'Usuario inexistente'}), 404
-
-
 
 '''
 CRUD DE POSTEOS
@@ -109,22 +107,34 @@ def create_post():
 def edit_post(post_id):
     user_ident = get_jwt_identity()
     usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
-    post = Post.query.filter_by(id=post_id).first()
+    post = Post.query.get_or_404(post_id)
 
     if not post:
-        return jsonify({'error':'Posteo inexistent.'}), 404
+        return jsonify({'error':'Posteo inexistente.'}), 404
     
     if post.autor_id == usuario_logueado.id or usuario_logueado.rol == 'admin':
         data = request.get_json()
         post.titulo = data.get('titulo',post.titulo)
-        post.contendio = data.get('contenido',post.contendio)
+        post.contenido = data.get('contenido',post.contenido)
         post.status_post = data.get('status_post',post.status_post)
         post.categoria_id = data.get('categoria',post.categoria_id)
         post.fecha_actualizacion = data.get('Ultima actualizacion',post.fecha_actualizacion)
         db.session.commit()
-        return jsonify({'message':'Usuario editado correctamente.'}), 200
+        return jsonify({'message':'Posteo editado correctamente.'}), 200
     return jsonify({'error':'No autorizado.'}), 403
 
+# Eliminar Post
+@jwt_required()
+def delete_post(post_id):
+    user_ident = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    post = Post.query.filter_by(id=post_id).first()
+    if not post:
+        return jsonify({'error':'El post solicitado no existe.'}),404
+    if usuario_logueado.id == post.autor_id or usuario_logueado.rol == 'admin':
+        post.delete()
+        return jsonify({'message':'Posteo eliminado correctamente.'}), 200
+    return jsonify({'error':'No posees los permisos para eliminar el post'}), 403
 
 '''
 CRUD DE CATEGORIAS
@@ -137,18 +147,18 @@ def get_all_categories():
     return jsonify({'categorias':categorias_listada}), 200
 
 @jwt_required()
-def crear_categorias():
+def create_categories():
     user_ident = get_jwt_identity()
     usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
     
     if usuario_logueado.rol != 'admin':
         return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
     data = request.get_json()
-    nombre_categoria = nombre = data.get('nombre')
+    nombre_categoria = data.get('nombre')
 
     categoria_existente = Categoria.query.filter_by(nombre=nombre_categoria).first()
     if categoria_existente:
-        return jsonify({'error','Categoría ya existente.'}), 400
+        return jsonify({'error':'Categoría ya existente.'}), 400
     
     nueva_categoria = Categoria(nombre_categoria)
     db.session.add(nueva_categoria)
@@ -156,11 +166,74 @@ def crear_categorias():
     return jsonify({'message':f'Categoría {nombre_categoria} creada exitosamente.'}), 201
 
 @jwt_required()
-def editar_categoria(cate_id):
+def edit_categorie(cate_id):
     user_ident = get_jwt_identity()
-    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    usuario_logueado = Usuario.query.get_or_404(cate_id)
+    categoria = Categoria.query.filter_by(id=cate_id).first()
 
     if usuario_logueado.rol != 'admin':
         return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
     
     data = request.get_json()
+    categoria.nombre = data.get('nombre',Categoria.nombre)
+    categoria_existente = Categoria.query.filter_by(nombre=categoria.nombre).first()
+    if categoria_existente:
+        return jsonify({'error':'Categoría ya existente.'}), 400
+    
+    db.session.commit()
+    return jsonify({'message':'Categoría editada exitosamente.'}), 200
+
+"""
+CRUD DE COMENTARIOS
+"""
+
+@jwt_required()
+def get_all_comments():
+    comentarios = Comentario.query.all()
+    comentarios_listado = [comentario.serialize() for comentario in comentarios]
+    return jsonify({'Todos los comentarios':comentarios_listado}), 200
+
+@jwt_required()
+def create_comments():
+    data = request.get_json()
+    autor_id = get_jwt_identity()
+    post_id = data.get('post_id')
+    post = Post.query.get_or_404(post_id)
+    comment = Comentario(
+        contenido = data.get('contenido'),
+        post_id = post.id,
+        autor_id = autor_id
+    )
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify({'message':'Comentario creado con éxito.'}), 201
+
+@jwt_required()
+def edit_comments(comment_id):
+    user_ident = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    comentario = Comentario.query.filter_by(id=comment_id).first()
+
+    if not comentario:
+        return jsonify({'error':'Comentario inexistente.'}), 404
+    
+    if comentario.autor_id == usuario_logueado.id or usuario_logueado.rol == 'admin':
+        data = request.get_json()
+        comentario.contenido = data.get('contenido',comentario.contenido)
+        db.session.commit()
+        return jsonify({'message':'Comentario editado correctamente.'}), 200
+    return jsonify({'error':'No autorizado.'}), 403
+
+@jwt_required()
+def delete_comments(comment_id):
+    user_ident = get_jwt_identity()
+    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    comentario = Comentario.query.filter_by(id=comment_id).first()
+
+    if not comentario:
+        return jsonify({'error':'Comentario inexistente.'}), 404
+    
+    if comentario.autor_id == usuario_logueado.id or usuario_logueado.rol == 'admin':
+        comentario.delete()
+        return jsonify({'message':'Comentario eliminado exitosamente.'}), 200
+    return jsonify({'error':'No tienes para eliminar el comentario.'}), 404

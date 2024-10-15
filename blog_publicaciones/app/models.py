@@ -55,7 +55,10 @@ class Post(db.Model):
     fecha_actualizacion = db.Column(db.DateTime,default=func.now(),onupdate=func.now())
     autor_id = db.Column(db.Integer,db.ForeignKey('usuario.id'),nullable=False)
     categoria_id = db.Column(db.Integer,db.ForeignKey('categoria.id'),nullable=False)
-    status_post = db.Column(Enum('borrador','publicado',name='status_post'),default='borrador',nullable=True)
+    status_post = db.Column(Enum('borrador','publicado','eliminado',name='status_post'),default='borrador',nullable=True)
+
+    def delete(self):
+        self.status_post = 'eliminado'
 
     def serialize_post(self):
         return{
@@ -73,12 +76,18 @@ class Comentario(db.Model):
     fecha_creacion = db.Column(db.DateTime,default=func.now())
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'),nullable=False)
     autor_id = db.Column(db.Integer,db.ForeignKey('usuario.id'),nullable=False)
+    status_comment = db.Column(Enum('borrador','publicado','eliminado',name='status_comment'),default='borrador',nullable=True)
+
+    autor = db.relationship('Usuario',backref='comentarios')
+
+    def delete(self):
+        self.status_comment = 'eliminado'
 
     def serialize(self):
         return{
             'contenido':self.contenido,
             'fecha de creación':self.fecha_creacion,
-            
+            'autor':self.autor.usuario
         }
 
 class Categoria(db.Model):
