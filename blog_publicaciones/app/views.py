@@ -58,7 +58,7 @@ def edit_profile(user_id):
             usuario.usuario = data.get('usuario',usuario.usuario)
             usuario.email = data.get('email',usuario.email)
             db.session.commit()
-            return jsonify({'message':f"Usuario {data['usuario']}, actualizaco con éxito"}), 200
+            return jsonify({'message':f"Usuario {usuario.usuario} actualizaco con éxito"}), 200
         return jsonify({'error':'No autorizado'}), 403
     return jsonify({'error':'Usuario inexistente'}), 404
 
