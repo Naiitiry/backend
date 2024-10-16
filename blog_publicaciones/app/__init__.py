@@ -21,7 +21,7 @@ def create_app():
         get_all_post, get_post, create_post, edit_post, 
         edit_profile, create_categories,get_all_categories,
         edit_categorie,delete_post, create_comments, edit_comments, 
-        delete_comments,get_all_comments
+        delete_comments,get_all_comments,edit_profile_status
         )
 
     # Gestión de usuario
@@ -29,7 +29,8 @@ def create_app():
     app.route('/api/register',methods=['POST'])(register)
     app.route('/api/login',methods=['POST'])(login)
     app.route('/api/fetch/<int:user_id>',methods=['GET'])(profile)
-    app.route('/api/edit/<int:user_id>',methods=['PUT'])(edit_profile)
+    app.route('/api/fetch/edit/<int:user_id>',methods=['PUT'])(edit_profile)
+    app.route('/api/fetch/edit_status/<int:user_id>',methods=['PUT'])(edit_profile_status)
 
     # Gestión de publicaciones
     app.route('/api/publicaciones',methods=['GET'])(get_all_post)

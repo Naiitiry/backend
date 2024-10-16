@@ -62,6 +62,32 @@ def edit_profile(user_id):
         return jsonify({'error':'No autorizado'}), 403
     return jsonify({'error':'Usuario inexistente'}), 404
 
+@jwt_required()
+def edit_profile_status(user_id):
+    user_id_jwt = get_jwt_identity()
+    usuario = Usuario.query.get_or_404(user_id)
+    usuario_logueado = Usuario.query.filter_by(id=user_id_jwt)
+    
+    if usuario_logueado.rol != 'admin':
+        return jsonify({'error':'No posee los permisos necesarios'}), 403
+    if not usuario:
+        return jsonify({'error':'El usuario no existe.'}), 404
+    
+    data = request.get_json()
+    accion = data.get('accion')
+
+    if accion == 'activo':
+        usuario.activate()
+    elif accion == 'bloqueado':
+        usuario.block()
+    elif accion == 'inactivo':
+        usuario.delete()
+    else:
+        return jsonify({'error':'Selección inválida, debe elegir 1 de las 3 opciones:activo, inactivo o bloquedo.'}), 403
+
+    return jsonify({'message':f'Usuario {usuario.usuario} ha sido {accion} correctamente.'}), 200
+
+
 '''
 CRUD DE POSTEOS
 '''
