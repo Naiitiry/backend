@@ -8,20 +8,40 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
 
 > Aclaración: las pruebas serán hechas en ThunderClient, desde VSCode, también lo hice con Postman pero por comodidad continuaré con el primero y la ejecución de la API lo realizo en el CMD de Windows directamente en vez de la consola del IDE.<br> Las capturas de la misma serán almacenadas en el propio repositorio.
 <ol>
-  <li>Ejecución del servicio.</li>
+  <li>Ejecutamos localmente el servicio.</li>
   <img src="./img/Captura00.PNG"><br><br>
   <li>Primer GET para saber si conecta correctamente a la API.</li><br>
   <li>Completamos los datos para el registro del usuario.</li><br>
   <img src="./img/Captura1.PNG">
   <li>Luego ingresamos al endpoint de login</li><br>
   <img src="./img/Captura2.PNG"><br><br>
+
   <li>Una vez dentro, podemos ver tanto nuestros datos como la de los demás usuarios.</li><br>
   <img src="./img/Captura3.PNG"><br><br>
+
   <li>Unicamente podemos modificar nuestros datos y en caso de que seamos "admin" podemos modificar otros usuarios con el método PUT. En este caso pusimos el nombre y apellido con la primer letra en mayúsculas.</li><br>
   <img src="./img/Captura4.PNG"><br><br>
+
   <li>Luego utilizamos otro GET para ver si efectivamente se realizó la actualización.</li><br>
-  <img src="./img/Captura5.PNG">
-  
+  <img src="./img/Captura5.PNG"><br><br>
+
+  <li>Ahora intentamos, con un usuario standar, crear una categoria</li><br>
+  <img src="./img/Captura6.PNG"><br><br>
+
+  <li>Ahora cambiamos el rol del usuario</li><br>
+  <img src="./img/Captura7.PNG"><br><br>
+
+  <li>Una vez cambiado el rol, nos permite crear la categoría</li><br>
+  <img src="./img/Captura8.PNG"><br><br>
+
+  <li>Ya tenemos lo básico para crear nuestro primer posteo</li><br>
+  <img src="./img/Captura9.PNG"><br><br>
+
+  <li>Ahora vemos como figura cuando utilizamos en GET</li><br>
+  <img src="./img/Captura10.PNG">
+
+  <li>Realizamos la creación de varias categorías para más ejemplos</li><br>
+  <img src="./img/Captura11.PNG">
 </ol>
 
 ## Glosario
