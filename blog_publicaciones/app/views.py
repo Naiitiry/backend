@@ -44,7 +44,7 @@ def profile(user_id):
         return jsonify({'message':'Usuario no encontrado'}), 404
     return jsonify(usuario.serialize()), 200
 
-#*******************Editar usuario PENDIENTE*******************
+#******************* Editar usuario *******************
 @jwt_required()
 def edit_profile(user_id):
     user_id_jwt = get_jwt_identity()
@@ -153,6 +153,7 @@ def create_categories():
     
     if usuario_logueado.rol != 'admin':
         return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
+    
     data = request.get_json()
     nombre_categoria = data.get('nombre')
 
@@ -168,18 +169,14 @@ def create_categories():
 @jwt_required()
 def edit_categorie(cate_id):
     user_ident = get_jwt_identity()
-    usuario_logueado = Usuario.query.get_or_404(cate_id)
-    categoria = Categoria.query.filter_by(id=cate_id).first()
+    usuario_logueado = Usuario.query.filter_by(id=user_ident).first()
+    categoria = Categoria.query.get_or_404(cate_id)
 
     if usuario_logueado.rol != 'admin':
         return jsonify({'error':'No tienes los permisos para ejecutar la tarea.'}), 403
     
     data = request.get_json()
     categoria.nombre = data.get('nombre',Categoria.nombre)
-    categoria_existente = Categoria.query.filter_by(nombre=categoria.nombre).first()
-    if categoria_existente:
-        return jsonify({'error':'Categoría ya existente.'}), 400
-    
     db.session.commit()
     return jsonify({'message':'Categoría editada exitosamente.'}), 200
 

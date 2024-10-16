@@ -61,12 +61,14 @@ class Post(db.Model):
         self.status_post = 'eliminado'
 
     def serialize_post(self):
+        comentarios_totales = Comentario.query.filter_by(post_id=self.id).count()
         return{
             'id':self.id, 'titulo':self.titulo, 'contenido':self.contenido,
             'fecha de creacion':self.fecha_creacion.strftime('%d/%m/%Y'),
             'Ultima actualización':self.fecha_actualizacion.strftime('%d/%m/%Y'),
             'id del creador':self.autor_id,'id de categoría':self.categoria_id,
-            'Estado post':self.status_post
+            'Estado post':self.status_post,
+            'Comentarios totales':comentarios_totales
         }
 
 class Comentario(db.Model):

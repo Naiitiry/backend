@@ -20,7 +20,8 @@ def create_app():
     from app.views import (index,register, login, profile, 
         get_all_post, get_post, create_post, edit_post, 
         edit_profile, create_categories,get_all_categories,
-        delete_post, create_comments, edit_comments, delete_comments
+        edit_categorie,delete_post, create_comments, edit_comments, 
+        delete_comments,get_all_comments
         )
 
     # Gestión de usuario
@@ -40,9 +41,11 @@ def create_app():
     # Creación de categorías, unicamente ADMINS
     app.route('/api/categorias',methods=['GET'])(get_all_categories)
     app.route('/api/crear_categoria',methods=['POST'])(create_categories)
+    app.route('/api/editar_categoria/<int:cate_id>',methods=['PUT'])(edit_categorie)
 
 
     # Gestión de comentarios
+    app.route('/api/comentarios',methods=['GET'])(get_all_comments)
     app.route('/api/crear_comentario',methods=['POST'])(create_comments)
     app.route('/api/editar_comentario/<int:comment_id>',methods=['PUT'])(edit_comments)
     app.route('/api/eliminar_comentario/<int:comment_id>',methods=['DELETE'])(delete_comments)
