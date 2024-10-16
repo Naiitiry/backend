@@ -41,7 +41,23 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
   <img src="./img/Captura10.PNG">
 
   <li>Realizamos la creación de varias categorías para más ejemplos</li><br>
-  <img src="./img/Captura11.PNG">
+  <img src="./img/Captura11.PNG"><br><br>
+
+  <li>Ahora podemos actualizar nuestro post con alguna otra categoría</li><br>
+  <img src="./img/Captura12.PNG"><br><br>
+
+  <img src="./img/Captura13.PNG"><br><br>
+
+  <img src="./img/Captura14.PNG"><br><br>
+</ol>
+<p>Lo que me percaté, luego de la creación de varias categorías, fue algunas faltas de ortografía, por ejemplo "Accion" en vez de "Acción". Por lo tanto, pensé que es normal y una manera de revertir es darle a los admins la posibilidad de corregirlo.</p>
+<ol>
+    <li>Aquí el ejemplo</li><br>
+    <img src="./img/Captura15.PNG"><br><br>
+    <li>Hacemos el cambio</li><br>
+    <img src="./img/Captura16.PNG"><br><br>
+    <li>Revisamos la lista y observamos si salió bien</li><br>
+    <img src="./img/Captura17.PNG"><br>
 </ol>
 
 ## Glosario
