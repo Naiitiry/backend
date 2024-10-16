@@ -105,5 +105,9 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
         <td>/api/publicacion/&lt;int:post_id&gt;</td>
         <td>Buscamos un post determinado por su ID</td>
     </tr>
+    <tr>
+        <td>/api/crear_publicacion</td>
+        <td>A traves del método POST podemos crear un post nuevo</td>
+    </tr>
   </tbody>
 </table>
