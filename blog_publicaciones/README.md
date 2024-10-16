@@ -83,7 +83,7 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
     </tr>
     <tr>
       <td>
-        /api/fetch/&lt;int:id_user&gt
+        /api/fetch/&lt;int:id_user&gt;
       </td>
       <td>Una vez logeado permite ver a cualquier usuario indicando el número de ID</td>
     </tr>
@@ -96,6 +96,14 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
     <tr>
       <td>/api/fetch/edit_status/&lt;int:id_user&gt;</td>
       <td>Permite cambiar el status al usuario seleccionado, hay 3 opciones, "activo", "inactivo" y "bloqueado".</td>
+    </tr>
+    <tr>
+        <td>/api/publicaciones</td>
+        <td>Vemos todas las publicaciones con sus datos correspondientes</td>
+    </tr>
+    <tr>
+        <td>/api/publicacion/&lt;int:post_id&gt;</td>
+        <td>Buscamos un post determinado por su ID</td>
     </tr>
   </tbody>
 </table>
