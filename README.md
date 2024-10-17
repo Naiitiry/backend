@@ -26,10 +26,10 @@
 <h2 align="center" id="tecnologías-utilizadas">:white_check_mark:Tecnologías utilizadas</h2>
 🟢 Python <br>
 🔵 Flask <br>
+🟢 PostgreSQL
 
 <h2 align="center" id="personas-desarrolladores">
 Personas-Desarrolladores del Proyecto
 </h2>
 En este momento soy el único desarrollador, les proporciono mi LinkedIn para que puedan ver mi perfil.<br>
-<sub>Roman Danchuk</sub>
-(https://www.linkedin.com/in/roman-danchuk/)
+<p>Roman Danchuk: https://www.linkedin.com/in/roman-danchuk/</p>

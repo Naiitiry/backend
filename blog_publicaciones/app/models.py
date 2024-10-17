@@ -114,6 +114,11 @@ class Tag(db.Model):
     def __init__(self, nombre):
         self.nombre = nombre
 
+    def serialize(self):
+        return{
+            'nombre':self.nombre
+        }
+
 class Posts_Tags(db.Model):
     __tablename__ = 'posts_tags'
     post_id = db.Column(db.Integer,db.ForeignKey('post.id', ondelete='CASCADE'),primary_key=True,nullable=False)

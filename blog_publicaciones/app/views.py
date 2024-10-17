@@ -260,3 +260,4 @@ def delete_comments(comment_id):
         comentario.delete()
         return jsonify({'message':'Comentario eliminado exitosamente.'}), 200
     return jsonify({'error':'No tienes para eliminar el comentario.'}), 404
+
