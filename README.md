@@ -20,6 +20,7 @@
 <ul>
  <li>To-Do list</li>
  <li>Login de usuarios</li>
+ <li>Blog API</li>
 </ul>
 <span>En cada una de las apps/API's pondré capturas de su funcionamiento, en primer instancia, localmente y luego ver que servicio de Hosting es mas ventajoso para mostrar como funciona subidas a producción.</span>
  
