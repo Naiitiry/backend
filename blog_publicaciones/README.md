@@ -109,5 +109,41 @@ El objetivo de esta API es poder registrar usuarios, tanto administradores (con 
         <td>/api/crear_publicacion</td>
         <td>A traves del método POST podemos crear un post nuevo</td>
     </tr>
+    <tr>
+        <td>/api/editar_publicacion/&lt;int:post_id&gt;</td>
+        <td>A traves del método PUT podemos modificar un post a través de su ID.</td>
+    </tr>
+    <tr>
+        <td>/api/publicacion/eliminar_post/&lt;int:post_id&gt;</td>
+        <td>Eliminar (en realidad no la elimina, simplemente la deja con el status "eliminado") a través de su ID.</td>
+    </tr>
+    <tr>
+        <td>/api/categorias</td>
+        <td>Serializa todas las categorías disponibles, por el método GET</td>
+    </tr>
+    <tr>
+        <td>/api/crear_categoria</td>
+        <td>Se puede crear, a menos que ya exista, una categoría nueva. Cabe destacar que debe ser un usuario con permisos de ADMIN para poder crear una categoría.</td>
+    </tr>
+    <tr>
+        <td>/api/editar_categoria/&lt;int:cate_id&gt;</td>
+        <td>Se puede crear, a menos que ya exista, una categoría nueva. Cabe destacar que debe ser un usuario con permisos de ADMIN para poder crear una categoría.</td>
+    </tr>
+    <tr>
+        <td>/api/comentarios</td>
+        <td>Ver todas los comentarios por el método GET</td>
+    </tr>
+    <tr>
+        <td>/api/crear_comentario</td>
+        <td>Creamos comentarios vinculados a la id de un post.</td>
+    </tr>
+    <tr>
+        <td>/api/editar_comentario/&lt;int:comment_id&gt;</td>
+        <td>Posibilidad de editar un comentario, puede ser el propio creador o un admin.</td>
+    </tr>
+    <tr>
+        <td>/api/eliminar_comentario/&lt;int:comment_id&gt;</td>
+        <td>Posibilidad de eliminar un comentario, puede ser el propio creador o un admin. También tiene un cambio de status a "eliminado".</td>
+    </tr>
   </tbody>
 </table>
