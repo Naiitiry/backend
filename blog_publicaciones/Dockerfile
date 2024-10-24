@@ -1,8 +1,8 @@
 # Usar una imagen base de Python
-FROM python:3.12-slim
+FROM python:latest
 
 # Establecer el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /blog_publicaciones
 
 # Copiar el archivo de requisitos a la imagen
 COPY requirements.txt .
@@ -18,6 +18,7 @@ EXPOSE 5000
 
 # Establecer la variable de entorno para Flask
 ENV FLASK_APP=run.py
+ENV FLASK_ENV=production
 
 # Ejecutar la aplicación con el comando "flask run"
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0","--port=5000"]
